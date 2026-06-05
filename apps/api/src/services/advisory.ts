@@ -109,6 +109,7 @@ export function adviseClimate(forecast: ClimateForecast, history?: HistoricalRai
 export function scoreCredit(application: CreditApplication, cooperative?: CooperativeRepaymentHistory): AdvisoryResult {
   const decision = application.expected_credit_decision;
   const climateFairnessCase = application.applicant_id === "AC003";
+  const loan = formatRequestedLoan(application);
 
   return {
     decision,
@@ -127,8 +128,24 @@ export function scoreCredit(application: CreditApplication, cooperative?: Cooper
     ],
     actions: [
       climateFairnessCase ? "Refer to human review; do not auto-reject based on climate-driven NDVI decline." : `Proceed with ${decision}.`,
-      `Requested loan: NGN ${application.requested_loan_NGN.toLocaleString("en-NG")}.`
+      `Requested loan: ${loan}.`
     ],
     riskFlags: climateFairnessCase ? ["Fairness test: NDVI decline is climate-driven, not proof of farmer default risk."] : []
   };
+}
+
+function formatRequestedLoan(application: CreditApplication) {
+  const loanOptions = [
+    ["NGN", application.requested_loan_NGN],
+    ["ETB", application.requested_loan_ETB],
+    ["KES", application.requested_loan_KES],
+    ["GHS", application.requested_loan_GHS]
+  ] as const;
+  const loan = loanOptions.find(([, value]) => typeof value === "number");
+
+  if (!loan || typeof loan[1] !== "number") {
+    return "not specified";
+  }
+
+  return `${loan[0]} ${loan[1].toLocaleString()}`;
 }

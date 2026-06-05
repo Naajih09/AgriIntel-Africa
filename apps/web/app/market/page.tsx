@@ -1,5 +1,6 @@
 import { Warehouse } from "lucide-react";
 import { DecisionCard } from "@/components/DecisionCard";
+import { MarketInsightsPanel } from "@/components/MarketInsightsPanel";
 import { marketDecision } from "@/lib/advisory";
 import { getMarketPrices, getStorageAdvisories } from "@/lib/data";
 
@@ -25,6 +26,7 @@ export default function MarketPage() {
           />
         ))}
       </div>
+      <MarketInsightsPanel prices={prices} />
       <div className="section table-wrap">
         <table>
           <thead>
