@@ -119,7 +119,10 @@ export type CreditApplication = {
   mobile_money_provider: string | null;
   satellite_ndvi_last_season?: number | null;
   satellite_ndvi_change_yoy?: number | null;
-  requested_loan_NGN: number;
+  requested_loan_NGN?: number;
+  requested_loan_ETB?: number;
+  requested_loan_KES?: number;
+  requested_loan_GHS?: number;
   loan_purpose: string;
   estimated_repayment_capacity_NGN?: number;
   expected_credit_decision: string;

@@ -204,13 +204,25 @@ function creditCard(item) {
   return card(
     item.applicant_id,
     item.name,
-    `${item.location.country} | NGN ${Number(item.requested_loan_NGN).toLocaleString("en-NG")} | ${item.farm_size_ha}ha`,
+    `${item.location.country} | ${formatRequestedLoan(item)} | ${item.farm_size_ha}ha`,
     [item.mobile_money_provider ?? "No wallet", item.cooperative_membership ? "Cooperative" : "No cooperative", item.expected_score_band],
     item.expected_credit_decision,
     item.applicant_id === "AC003"
       ? "Fairness guardrail: refer to human review because the NDVI decline is climate-driven."
       : item.notes
   );
+}
+
+function formatRequestedLoan(item) {
+  const loanOptions = [
+    ["NGN", item.requested_loan_NGN],
+    ["ETB", item.requested_loan_ETB],
+    ["KES", item.requested_loan_KES],
+    ["GHS", item.requested_loan_GHS]
+  ];
+  const loan = loanOptions.find(([, value]) => typeof value === "number");
+
+  return loan ? `${loan[0]} ${loan[1].toLocaleString()}` : "Loan not specified";
 }
 
 function moduleCard(code, title, body, href) {
