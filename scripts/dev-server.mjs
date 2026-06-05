@@ -51,22 +51,30 @@ function listen(port) {
 function loadData() {
   return {
     cropCases: readJson("c1_crop_health/crop_disease_cases.json"),
+    soilProfiles: readCsv("c1_crop_health/soil_profiles.csv"),
     farmers: readJson("c2_extension/farmer_profiles.json"),
+    seasonalCalendar: readCsv("c2_extension/seasonal_calendar_advisory.csv"),
     prices: readCsv("c3_postharvest/market_prices.csv"),
     storage: readJson("c3_postharvest/storage_advisory.json"),
     climate: readCsv("c4_climate/seasonal_forecasts.csv"),
-    credit: readJson("c5_finance/credit_applications.json")
+    climateHistory: readJson("c4_climate/historical_rainfall_yield.json"),
+    credit: readJson("c5_finance/credit_applications.json"),
+    cooperativeHistory: readCsv("c5_finance/cooperative_repayment_history.csv")
   };
 }
 
 function handleApi(pathname, response) {
   const routes = {
     "/api/crop-health": data.cropCases,
+    "/api/crop-health/soil-profiles": data.soilProfiles,
     "/api/extension": data.farmers,
+    "/api/extension/seasonal-calendar": data.seasonalCalendar,
     "/api/market/prices": data.prices,
     "/api/market/storage": data.storage,
     "/api/climate": data.climate,
-    "/api/credit": data.credit
+    "/api/climate/history": data.climateHistory,
+    "/api/credit": data.credit,
+    "/api/credit/cooperatives": data.cooperativeHistory
   };
 
   const payload = routes[pathname];
@@ -167,40 +175,50 @@ function renderMarket() {
 }
 
 function cropCard(item) {
+  const soil = data.soilProfiles.find((profile) => profile.farmer_id === item.farmer_id);
   return card(
     item.case_id,
     `${item.crop} in ${item.location.state}, ${item.location.country}`,
     `${item.crop_stage} | ${item.days_after_planting} days after planting`,
     [item.severity, item.language_test, item.photo_tags.join(" + ")],
     item.expected_diagnosis,
-    item.recommended_action
+    item.recommended_action,
+    soil ? `CSV soil: ${soil.soil_type}, pH ${soil.pH}, NPK ${soil.nitrogen_ppm}/${soil.phosphorus_ppm}/${soil.potassium_ppm}. Fertiliser: ${soil.recommended_fertiliser}.` : ""
   );
 }
 
 function extensionCard(item) {
   const voiceOnly = /illiterate|cannot use text/i.test(item.constraints) || /voice/i.test(item.preferred_channel);
+  const calendar = data.seasonalCalendar.find((row) => row.farmer_id === item.farmer_id);
   return card(
     item.farmer_id,
     item.name,
     `${item.location.country} | ${item.phone_type} | ${item.farm_size_ha}ha`,
     [item.language, item.preferred_channel],
     voiceOnly ? `Voice call in ${item.language}` : item.preferred_channel,
-    voiceOnly ? "Route through voice, not app or SMS, and keep the advisory practical for low-cash constraints." : `Personalize around ${item.goals}`
+    voiceOnly ? "Route through voice, not app or SMS, and keep the advisory practical for low-cash constraints." : `Personalize around ${item.goals}`,
+    calendar ? `CSV calendar: plant ${calendar.crop} on ${calendar.ai_adjusted_planting_date} instead of ${calendar.traditional_planting_date}. Variety: ${calendar.recommended_variety}.` : ""
   );
 }
 
 function climateCard(item) {
+  const history = data.climateHistory.find((row) => row.location_id === item.location_id);
   return card(
     item.location_id,
     `${item.crop} in ${item.state_region}, ${item.country}`,
     `${item.season} | onset ${item.forecast_onset_2025}`,
     [item.dry_spell_risk_category, item.flood_risk_category, item.forecast_rainfall_anomaly_pct],
     item.location_id === "CL006" ? "Fallow 50% and plant short-season sorghum" : `Plant ${item.adjusted_variety}`,
-    item.rationale
+    item.rationale,
+    history ? `Historical data: ${history.extreme_events.slice(-3).join("; ")}.` : ""
   );
 }
 
 function creditCard(item) {
+  const cooperative = data.cooperativeHistory.find((row) =>
+    row.country === item.location.country &&
+    (row.state_region === item.location.state || row.state_region === item.location.region)
+  );
   return card(
     item.applicant_id,
     item.name,
@@ -209,7 +227,8 @@ function creditCard(item) {
     item.expected_credit_decision,
     item.applicant_id === "AC003"
       ? "Fairness guardrail: refer to human review because the NDVI decline is climate-driven."
-      : item.notes
+      : item.notes,
+    cooperative ? `CSV cooperative: ${cooperative.cooperative_name}, repayment ${cooperative.repayment_rate_pct}%, default ${cooperative.default_rate_pct}%.` : ""
   );
 }
 
@@ -227,7 +246,7 @@ function renderCards(title, eyebrow, cards) {
   `;
 }
 
-function card(eyebrow, title, meta, badges, decision, body) {
+function card(eyebrow, title, meta, badges, decision, body, csvContext = "") {
   return `
     <article class="card">
       <p class="eyebrow">${escapeHtml(eyebrow)}</p>
@@ -237,6 +256,7 @@ function card(eyebrow, title, meta, badges, decision, body) {
       <div class="result">
         <strong>${escapeHtml(decision)}</strong>
         <p>${escapeHtml(body)}</p>
+        ${csvContext ? `<p class="csv-context">${escapeHtml(csvContext)}</p>` : ""}
       </div>
     </article>
   `;
@@ -277,6 +297,7 @@ function layout(content) {
     .badges { display: flex; flex-wrap: wrap; gap: 8px; }
     .badges span { background: var(--wash); border: 1px solid var(--line); border-radius: 999px; font-size: .78rem; font-weight: 700; padding: 5px 9px; }
     .result { background: #f7faf5; border-left: 4px solid var(--leaf); margin-top: auto; padding: 12px; }
+    .csv-context { border-top: 1px solid var(--line); color: #31543f; font-size: .9rem; margin-top: 10px; padding-top: 10px; }
     .table-wrap { overflow-x: auto; }
     table { border-collapse: collapse; min-width: 760px; width: 100%; }
     td, th { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; }

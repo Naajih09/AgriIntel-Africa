@@ -1,31 +1,39 @@
 import type {
   AdvisoryResult,
   ClimateForecast,
+  CooperativeRepaymentHistory,
   CreditApplication,
   CropCase,
   FarmerProfile,
+  HistoricalRainfallYield,
   MarketPrice,
+  SeasonalCalendarAdvisory,
+  SoilProfile,
   StorageAdvisory
 } from "@agriintel/types";
 
-export function diagnoseCropCase(cropCase: CropCase): AdvisoryResult {
+export function diagnoseCropCase(cropCase: CropCase, soil?: SoilProfile): AdvisoryResult {
   return {
     decision: cropCase.expected_diagnosis,
     confidence: `${Math.round(cropCase.confidence_floor * 100)}%+`,
     reasoning: [
       `${cropCase.crop} at ${cropCase.crop_stage} shows ${cropCase.symptom_description}`,
       `Photo tags match ${cropCase.photo_tags.join(", ")}.`,
-      `Severity is ${cropCase.severity}; response should include ${cropCase.language_test}.`
+      `Severity is ${cropCase.severity}; response should include ${cropCase.language_test}.`,
+      soil
+        ? `CSV soil profile: ${soil.soil_type}, pH ${soil.pH}, NPK ${soil.nitrogen_ppm}/${soil.phosphorus_ppm}/${soil.potassium_ppm}, organic matter ${soil.organic_matter_pct}%.`
+        : "No matching soil CSV row found for this farmer."
     ],
     actions: [
       cropCase.recommended_action,
-      `Use only local inputs: ${cropCase.locally_available_inputs.join("; ")}.`
+      `Use only local inputs: ${cropCase.locally_available_inputs.join("; ")}.`,
+      soil ? `Fertiliser context from CSV: ${soil.recommended_fertiliser}.` : "Ask for a soil test before fertiliser-specific advice."
     ],
     riskFlags: cropCase.confidence_floor < 0.8 ? ["Below normal confidence floor; ask for clearer photo or extension review."] : []
   };
 }
 
-export function createExtensionAdvice(farmer: FarmerProfile): AdvisoryResult {
+export function createExtensionAdvice(farmer: FarmerProfile, calendar?: SeasonalCalendarAdvisory): AdvisoryResult {
   const voiceOnly = /illiterate|cannot use text/i.test(farmer.constraints) || /voice/i.test(farmer.preferred_channel);
   const channel = voiceOnly ? `Voice call in ${farmer.language}` : farmer.preferred_channel;
 
@@ -35,11 +43,15 @@ export function createExtensionAdvice(farmer: FarmerProfile): AdvisoryResult {
     reasoning: [
       `${farmer.name} farms ${farmer.crops.join(", ")} on ${farmer.farm_size_ha}ha.`,
       `Primary constraints: ${farmer.constraints}`,
-      `Advice must respect phone type (${farmer.phone_type}) and preferred channel (${farmer.preferred_channel}).`
+      `Advice must respect phone type (${farmer.phone_type}) and preferred channel (${farmer.preferred_channel}).`,
+      calendar
+        ? `CSV calendar shifts ${calendar.crop} from ${calendar.traditional_planting_date} to ${calendar.ai_adjusted_planting_date}: ${calendar.reason_for_shift}`
+        : "No matching seasonal calendar CSV row found."
     ],
     actions: [
       `Deliver advisory via ${channel}.`,
       `Focus message on: ${farmer.goals}`,
+      calendar ? `Recommend ${calendar.recommended_variety}; ${calendar.input_timing_advice}.` : "Use general seasonal advisory until a calendar row is added.",
       farmer.mobile_money ? "Include input budgeting and mobile money repayment reminders." : "Avoid app, wallet, or text-heavy workflows."
     ]
   };
@@ -69,7 +81,7 @@ export function analyzeMarket(prices: MarketPrice[], storage: StorageAdvisory): 
   };
 }
 
-export function adviseClimate(forecast: ClimateForecast): AdvisoryResult {
+export function adviseClimate(forecast: ClimateForecast, history?: HistoricalRainfallYield): AdvisoryResult {
   const confidence = Number(String(forecast.forecast_confidence).replace("%", ""));
   const riskFlags = [
     forecast.dry_spell_risk_category.includes("HIGH") ? `${forecast.dry_spell_risk_category} dry spell risk` : "",
@@ -82,7 +94,10 @@ export function adviseClimate(forecast: ClimateForecast): AdvisoryResult {
     reasoning: [
       `${forecast.state_region}, ${forecast.country} forecast onset: ${forecast.forecast_onset_2025}.`,
       `Rainfall anomaly: ${forecast.forecast_rainfall_anomaly_pct}.`,
-      forecast.rationale
+      forecast.rationale,
+      history
+        ? `Historical dataset: recent extreme events include ${history.extreme_events.slice(-3).join("; ")}.`
+        : "No matching historical rainfall/yield record found."
     ],
     actions: forecast.location_id === "CL006"
       ? ["Fallow 50% of land this season.", "Plant only drought-hardy short-season sorghum on the remaining land."]
@@ -91,7 +106,7 @@ export function adviseClimate(forecast: ClimateForecast): AdvisoryResult {
   };
 }
 
-export function scoreCredit(application: CreditApplication): AdvisoryResult {
+export function scoreCredit(application: CreditApplication, cooperative?: CooperativeRepaymentHistory): AdvisoryResult {
   const decision = application.expected_credit_decision;
   const climateFairnessCase = application.applicant_id === "AC003";
 
@@ -105,7 +120,10 @@ export function scoreCredit(application: CreditApplication): AdvisoryResult {
         : "No cooperative repayment record available.",
       application.mobile_money_account
         ? `${application.mobile_money_provider} mobile money is available as an alternative income signal.`
-        : "No mobile money trail; avoid overconfidence."
+        : "No mobile money trail; avoid overconfidence.",
+      cooperative
+        ? `CSV cooperative context: ${cooperative.cooperative_name} has ${cooperative.repayment_rate_pct}% repayment and ${cooperative.default_rate_pct}% default rate. Notes: ${cooperative.notes}`
+        : "No matching cooperative CSV row found for country/state context."
     ],
     actions: [
       climateFairnessCase ? "Refer to human review; do not auto-reject based on climate-driven NDVI decline." : `Proceed with ${decision}.`,

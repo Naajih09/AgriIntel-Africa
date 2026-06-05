@@ -27,6 +27,22 @@ export type CropCase = {
   confidence_floor: number;
 };
 
+export type SoilProfile = {
+  farmer_id: string;
+  location: string;
+  soil_type: string;
+  pH: number;
+  nitrogen_ppm: number;
+  phosphorus_ppm: number;
+  potassium_ppm: number;
+  organic_matter_pct: number;
+  texture: string;
+  drainage: string;
+  last_soil_test_date: string;
+  recommended_fertiliser: string;
+  notes: string;
+};
+
 export type FarmerProfile = {
   farmer_id: string;
   name: string;
@@ -41,6 +57,21 @@ export type FarmerProfile = {
   preferred_channel: string;
   education?: string;
   extension_visits_last_year?: number;
+};
+
+export type SeasonalCalendarAdvisory = {
+  farmer_id: string;
+  crop: string;
+  country: string;
+  aez: string;
+  traditional_planting_date: string;
+  ai_adjusted_planting_date: string;
+  reason_for_shift: string;
+  recommended_variety: string;
+  variety_change_reason: string;
+  input_timing_advice: string;
+  estimated_yield_baseline_kg_ha: number;
+  estimated_yield_optimised_kg_ha: number;
 };
 
 export type MarketPrice = {
@@ -105,6 +136,19 @@ export type ClimateForecast = {
   rationale: string;
 };
 
+export type HistoricalRainfallYield = {
+  location_id: string;
+  country: string;
+  state: string;
+  years: number[];
+  onset_date_doy: number[];
+  total_rainfall_mm: number[];
+  dry_spells_gt14days: number[];
+  yield_loss_pct_vs_potential: number[];
+  extreme_events: string[];
+  [key: string]: unknown;
+};
+
 export type CreditApplication = {
   applicant_id: string;
   name: string;
@@ -124,6 +168,22 @@ export type CreditApplication = {
   estimated_repayment_capacity_NGN?: number;
   expected_credit_decision: string;
   expected_score_band: string;
+  notes: string;
+};
+
+export type CooperativeRepaymentHistory = {
+  cooperative_id: string;
+  cooperative_name: string;
+  country: string;
+  state_region: string;
+  members: number;
+  years_active: number;
+  total_loans_disbursed_USD: number;
+  total_repaid_USD: number;
+  repayment_rate_pct: number;
+  avg_loan_size_USD: number;
+  default_rate_pct: number;
+  top_default_reasons: string;
   notes: string;
 };
 

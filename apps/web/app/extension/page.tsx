@@ -1,10 +1,11 @@
 import { MessageSquareText } from "lucide-react";
 import { DecisionCard } from "@/components/DecisionCard";
 import { extensionDecision } from "@/lib/advisory";
-import { getFarmerProfiles } from "@/lib/data";
+import { getFarmerProfiles, getSeasonalCalendar } from "@/lib/data";
 
 export default function ExtensionPage() {
   const farmers = getFarmerProfiles();
+  const calendar = getSeasonalCalendar();
 
   return (
     <section className="section">
@@ -20,7 +21,7 @@ export default function ExtensionPage() {
             title={item.name}
             meta={`${item.location.country} | ${item.phone_type} | ${item.farm_size_ha}ha`}
             badges={[item.language, item.preferred_channel, `${item.extension_visits_last_year ?? 0} visits`]}
-            decision={extensionDecision(item)}
+            decision={extensionDecision(item, calendar.find((row) => row.farmer_id === item.farmer_id))}
           />
         ))}
       </div>

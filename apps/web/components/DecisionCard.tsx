@@ -9,6 +9,7 @@ type DecisionCardProps = {
     title: string;
     confidence: string;
     body: string;
+    csvContext?: string;
   };
   href?: string;
 };
@@ -31,6 +32,7 @@ export function DecisionCard({ title, eyebrow, meta, badges = [], decision, href
       <div className="result">
         <strong>{decision.title}</strong>
         <p>{decision.body}</p>
+        {decision.csvContext ? <p className="meta">{decision.csvContext}</p> : null}
         <span className="badge warn">Confidence: {decision.confidence}</span>
       </div>
     </article>

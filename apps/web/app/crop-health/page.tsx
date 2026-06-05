@@ -1,10 +1,11 @@
 import { Sprout } from "lucide-react";
 import { DecisionCard } from "@/components/DecisionCard";
 import { cropDecision } from "@/lib/advisory";
-import { getCropCases } from "@/lib/data";
+import { getCropCases, getSoilProfiles } from "@/lib/data";
 
 export default function CropHealthPage() {
   const cases = getCropCases();
+  const soils = getSoilProfiles();
 
   return (
     <section className="section">
@@ -20,7 +21,7 @@ export default function CropHealthPage() {
             title={`${item.crop} in ${item.location.state}, ${item.location.country}`}
             meta={`${item.crop_stage} | ${item.days_after_planting} days after planting`}
             badges={[item.severity, item.language_test, item.photo_tags.join(" + ")]}
-            decision={cropDecision(item)}
+            decision={cropDecision(item, soils.find((soil) => soil.farmer_id === item.farmer_id))}
           />
         ))}
       </div>

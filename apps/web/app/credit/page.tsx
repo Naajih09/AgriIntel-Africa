@@ -1,10 +1,11 @@
 import { BadgeDollarSign } from "lucide-react";
 import { DecisionCard } from "@/components/DecisionCard";
 import { creditDecision } from "@/lib/advisory";
-import { getCreditApplications } from "@/lib/data";
+import { getCooperativeHistory, getCreditApplications } from "@/lib/data";
 
 export default function CreditPage() {
   const applications = getCreditApplications();
+  const cooperatives = getCooperativeHistory();
 
   return (
     <section className="section">
@@ -24,7 +25,14 @@ export default function CreditPage() {
               item.cooperative_membership ? "Cooperative" : "No cooperative",
               item.expected_score_band
             ]}
-            decision={creditDecision(item)}
+            decision={creditDecision(
+              item,
+              cooperatives.find(
+                (row) =>
+                  row.country === item.location.country &&
+                  (row.state_region === item.location.state || row.state_region === item.location.region)
+              )
+            )}
           />
         ))}
       </div>
