@@ -1,0 +1,9 @@
+farmer_id,location,soil_type,pH,nitrogen_ppm,phosphorus_ppm,potassium_ppm,organic_matter_pct,texture,drainage,last_soil_test_date,recommended_fertiliser,notes
+F1042,Kano NG,Sandy loam,6.1,18,12,110,1.2,Coarse,Good,2024-03-10,NPK 15-15-15 at 200kg/ha + Urea top-dress at V6,Low OM typical of Sudan savanna. Add organic matter.
+F2071,Nakuru KE,Volcanic loam,5.8,32,18,180,3.8,Medium,Moderate,2024-02-20,CAN 60kg/ha + Triple Super Phosphate 50kg/ha,Highland volcanic soils. Watch pH — lime may be needed if below 5.5.
+F3015,Oromia ET,Clay loam,5.5,24,10,140,2.1,Fine,Poor,2024-01-15,DAP 100kg/ha at planting + Urea 50kg/ha top-dress,Poor drainage — consider ridging. Teff tolerates poor soils better than most cereals.
+F4088,Kaduna NG,Sandy clay,6.3,15,9,95,1.0,Medium-coarse,Good,2024-03-01,NPK 20-10-10 at 150kg/ha,Low P is limiting yield. Incorporate crop residues to build OM.
+F5020,Ashanti GH,Ferralitic,6.0,28,22,160,2.9,Fine,Moderate,2024-01-30,No inorganic fertiliser — use pod husk compost,Cocoa soils in forest zone. Focus on organic matter; synthetic N can increase disease risk.
+F6033,Rift Valley KE,Sandy loam,6.4,20,14,130,1.5,Coarse,Good,2024-02-10,DAP 75kg/ha basal + CAN 50kg/ha top-dress,Adequate K. Main limitation is N. Inoculate seed with Rhizobium — free N fixation.
+F7004,Borno NG,Sandy,6.8,12,8,80,0.7,Coarse,Excellent,2024-03-05,Single Super Phosphate 100kg/ha + Urea 60kg/ha,Sahel sandy soils lose nutrients fast. Split fertiliser application recommended.
+F8051,Mbeya TZ,Andosol,6.2,30,20,200,4.1,Medium,Good,2024-02-28,NPK 23-23-0 at 150kg/ha + Urea 100kg/ha at tillering,Excellent volcanic soils. High yield potential if disease managed.

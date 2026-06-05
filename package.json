@@ -1,0 +1,22 @@
+{
+  "name": "agriintel-africa",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered farming intelligence platform for African smallholder farmers.",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "dev:workspace": "pnpm -r --parallel dev",
+    "dev:web": "pnpm --filter @agriintel/web dev",
+    "dev:api": "pnpm --filter @agriintel/api dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

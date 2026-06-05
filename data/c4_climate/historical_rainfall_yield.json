@@ -1,0 +1,38 @@
+[
+  {
+    "location_id": "CL001",
+    "country": "Nigeria",
+    "state": "Kano",
+    "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "onset_date_doy": [162, 164, 158, 170, 161, 167, 163, 172, 165, 169],
+    "total_rainfall_mm": [610, 595, 640, 510, 590, 555, 580, 490, 560, 530],
+    "dry_spells_gt14days": [1, 2, 1, 3, 1, 2, 1, 3, 2, 2],
+    "crop_millet_yield_kg_ha": [820, 790, 870, 620, 800, 740, 810, 600, 760, 710],
+    "yield_loss_pct_vs_potential": [12, 15, 8, 33, 14, 20, 13, 35, 18, 23],
+    "extreme_events": ["None", "None", "None", "Late onset + dry spell Aug", "None", "Dry spell July", "None", "Very late onset + 2x dry spell", "Moderate dry spell", "Dry spell Aug"]
+  },
+  {
+    "location_id": "CL004",
+    "country": "Ghana",
+    "state": "Northern",
+    "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "onset_date_doy": [140, 138, 135, 152, 141, 147, 139, 155, 143, 148],
+    "total_rainfall_mm": [960, 940, 1010, 830, 920, 880, 950, 800, 900, 860],
+    "dry_spells_gt14days": [0, 1, 0, 2, 1, 1, 0, 2, 1, 1],
+    "crop_maize_yield_kg_ha": [1600, 1540, 1720, 1200, 1580, 1440, 1660, 1140, 1520, 1380],
+    "yield_loss_pct_vs_potential": [8, 11, 2, 31, 10, 18, 5, 35, 13, 21],
+    "extreme_events": ["None", "None", "None", "Late onset + below-normal", "None", "Dry spell June", "None", "Late onset + dry spell", "None", "Below normal rains"]
+  },
+  {
+    "location_id": "CL006",
+    "country": "Tanzania",
+    "state": "Dodoma",
+    "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "onset_date_doy": [302, 308, 296, 322, 305, 315, 300, 330, 310, 318],
+    "total_rainfall_mm": [420, 410, 450, 320, 390, 360, 430, 290, 380, 340],
+    "dry_spells_gt14days": [1, 2, 1, 4, 2, 3, 1, 4, 2, 3],
+    "crop_sorghum_yield_kg_ha": [900, 870, 980, 580, 830, 730, 940, 520, 800, 690],
+    "yield_loss_pct_vs_potential": [14, 17, 7, 45, 21, 30, 10, 50, 24, 34],
+    "extreme_events": ["None", "Dry spell Dec", "None", "Very late onset + severe deficit", "Dry spell Jan", "Poor rains Jan-Feb", "None", "Worst season in decade", "Moderate deficit", "Late onset + dry spell"]
+  }
+]

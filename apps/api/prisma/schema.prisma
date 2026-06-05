@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CropCase {
+  id                String @id @default(cuid())
+  caseId            String @unique
+  farmerId          String
+  country           String
+  state             String
+  crop              String
+  cropStage         String
+  symptoms          String
+  photoTags         String[]
+  expectedDiagnosis String
+  severity          String
+  recommendedAction String
+  localInputs       String[]
+  languageTest      String
+  confidenceFloor   Float
+  aiDiagnosis       Json?
+}
+
+model FarmerProfile {
+  id               String @id @default(cuid())
+  farmerId         String @unique
+  name             String
+  country          String
+  language         String
+  phoneType        String
+  preferredChannel String
+  crops            String[]
+  farmSizeHa       Float
+  constraints      String
+  goals            String
+  aiAdvisory       Json?
+}
+
+model MarketPrice {
+  id          String   @id @default(cuid())
+  recordId    String   @unique
+  date        DateTime
+  commodity   String
+  marketName  String
+  country     String
+  state       String
+  priceLocal  Float
+  currency    String
+  priceUsd    Float
+  trend7Day   Float
+  trend30Day  Float
+  notes       String
+}
+
+model StorageAdvisory {
+  id             String @id @default(cuid())
+  farmerId       String
+  commodity      String
+  quantityKg     Float
+  shelfLifeDays  Int
+  risk           String
+  recommendation String
+  sellOrStore    String
+  matchedBuyers  Json
+  aiDecision     Json?
+}
+
+model ClimateForecast {
+  id                   String @id @default(cuid())
+  locationId           String @unique
+  country              String
+  stateRegion          String
+  crop                 String
+  forecastOnset        String
+  forecastConfidence   Float
+  rainfallAnomalyPct   Float
+  drySpellRisk         String
+  floodRisk            String
+  recommendedPlantDate String
+  adjustedVariety      String
+  rationale            String
+  aiAdvisory           Json?
+}
+
+model CreditApplication {
+  id                  String  @id @default(cuid())
+  applicantId         String  @unique
+  name                String
+  country             String
+  farmSizeHa          Float
+  landTenure          String
+  cooperativeMember   Boolean
+  cooperativeRecord   String?
+  mobileMoneyProvider String?
+  ndviLastSeason      Float?
+  ndviChangeYoy       Float?
+  requestedLoan       Float
+  loanPurpose         String
+  expectedDecision    String
+  aiDecision          Json?
+}

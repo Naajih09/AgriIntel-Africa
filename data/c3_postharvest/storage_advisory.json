@@ -1,0 +1,66 @@
+[
+  {
+    "farmer_id": "F3001",
+    "commodity": "Maize",
+    "quantity_kg": 3400,
+    "moisture_content_pct": 17.2,
+    "harvest_date": "2025-10-05",
+    "current_storage": "Open poly sacks in mud store",
+    "location": { "state": "Benue", "country": "Nigeria" },
+    "current_farm_gate_price_NGN_kg": 310,
+    "assessment": {
+      "shelf_life_current_days": 12,
+      "risk": "HIGH — moisture above safe 13%. Aflatoxin risk within 2 weeks.",
+      "recommendation": "Dry immediately on tarpaulin for 3-5 days. Target moisture below 13% before bagging. Use hermetic bags (PICS bags) if available.",
+      "sell_or_store": "Store after drying — price expected +15% in 6 weeks based on seasonal trend.",
+      "nearest_cold_storage": null,
+      "nearest_hermetic_bag_supplier": "Benue ADP store, Makurdi — 12km",
+      "matched_buyers": [
+        { "buyer": "Olam Nigeria Ltd", "price_NGN_kg": 370, "min_quantity_kg": 5000, "contact": "0801-OLAM-NG", "requirement": "Moisture below 13.5%, Grade A" },
+        { "buyer": "WACOT Ltd (Wheat, Grains)", "price_NGN_kg": 355, "min_quantity_kg": 2000, "contact": "0802-WACOT", "requirement": "Aflatoxin test required" }
+      ]
+    }
+  },
+  {
+    "farmer_id": "F3002",
+    "commodity": "Tomato",
+    "quantity_kg": 980,
+    "moisture_content_pct": null,
+    "harvest_date": "2025-10-12",
+    "current_storage": "None — in field crates",
+    "location": { "state": "Kaduna", "country": "Nigeria" },
+    "current_farm_gate_price_NGN_kg": 430,
+    "assessment": {
+      "shelf_life_current_days": 3,
+      "risk": "CRITICAL — tomato has 3-5 day shelf life unrefrigerated. Price at Lagos is NGN 450 but transport takes 14 hours.",
+      "recommendation": "Sell immediately at Kaduna market OR contact tomato paste processor Dangote Tomato Factory (Kaduna). Do not attempt Lagos.",
+      "sell_or_store": "Sell within 48 hours. Local price (NGN 430) is better than risk of transport loss.",
+      "nearest_cold_storage": "RMRDC cold store, Kaduna — 34km. NGN 120/crate/week.",
+      "matched_buyers": [
+        { "buyer": "Dangote Tomato Processing Factory", "price_NGN_kg": 415, "min_quantity_kg": 500, "contact": "0700-DANGOTE-FARM", "requirement": "Ripe grade, delivered to factory gate" },
+        { "buyer": "Kaduna Wholesale Cluster B", "price_NGN_kg": 430, "min_quantity_kg": 100, "contact": "Market master 0811-KD-WHL", "requirement": "None" }
+      ]
+    }
+  },
+  {
+    "farmer_id": "F3003",
+    "commodity": "Sorghum",
+    "quantity_kg": 6200,
+    "moisture_content_pct": 12.1,
+    "harvest_date": "2025-09-28",
+    "current_storage": "Metal silo (200kg capacity x6), rest in sacks",
+    "location": { "state": "Sokoto", "country": "Nigeria" },
+    "current_farm_gate_price_NGN_kg": 420,
+    "assessment": {
+      "shelf_life_current_days": 180,
+      "risk": "LOW — moisture is within safe range. Silo portion secure. Sacks at moderate risk from weevils.",
+      "recommendation": "Treat sacked portion with Actellic 2% dust (1kg per tonne). Keep off ground on pallets. Inspect monthly.",
+      "sell_or_store": "STORE — price trend is upward (+19% over 30 days). Recommend selling 40% now to cover immediate cash needs and holding 60% for 8 weeks.",
+      "nearest_cold_storage": null,
+      "matched_buyers": [
+        { "buyer": "Nigerian Breweries (Kaduna plant)", "price_NGN_kg": 510, "min_quantity_kg": 10000, "contact": "NB agro-procurement 0802-NB-AGR", "requirement": "Red sorghum, moisture < 13%, 10t minimum" },
+        { "buyer": "Flour Mills Nigeria — sorghum division", "price_NGN_kg": 490, "min_quantity_kg": 5000, "contact": "0803-FMN-SOG" }
+      ]
+    }
+  }
+]
